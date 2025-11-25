@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vücut ve Zihin Yaşı Değerlendirmesi | Body & Mind Age Assessment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1021;
+      --card-bg: #0f172a;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --accent-strong: #06b6d4;
+      --danger: #f97373;
+      --success: #4ade80;
+      --warn: #facc15;
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --border: #1f2937;
+      --radius-lg: 18px;
+      --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.45);
+      --transition-fast: 0.18s ease-out;
+      --transition-med: 0.25s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+
+    header.hero {
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at top left, #0ea5e9 0, #0b1120 45%, #020617 100%);
+      border-radius: 28px;
+      padding: 20px 20px 24px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 28px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    @media (min-width: 768px) {
+      header.hero {
+        padding: 26px 32px 30px;
+      }
+    }
+
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .hero-inner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .hero-main {
+      max-width: 620px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #e0f2fe;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-kicker-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-strong);
+      box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.5);
+    }
+
+    .hero-title {
+      margin-top: 12px;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      line-height: 1.15;
+      font-weight: 700;
+      color: #f9fafb;
+    }
+
+    .hero-subtitle {
+      margin-top: 10px;
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: rgba(226, 232, 240, 0.92);
+    }
+
+    .hero-meta {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    .hero-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+    }
+
+    .hero-meta-icon {
+      font-size: 0.9rem;
+    }
+
+    .hero-cta-row {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      border-radius: 999px;
+      padding: 9px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        background var(--transition-fast), border-color var(--transition-fast),
+        color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #0f172a;
+      font-weight: 600;
+      box-shadow: 0 14px 30px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(56, 189, 248, 0.55);
+    }
+
+    .btn-ghost {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: #e5e7eb;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 0.95);
+      transform: translateY(-1px);
+    }
+
+    .hero-orb {
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 190px;
+      height: 190px;
+      background: radial-gradient(circle at 30% 20%, #f9fafb 0, #38bdf8 35%, #0ea5e9 65%, transparent 70%);
+      opacity: 0.35;
+      filter: blur(1px);
+      pointer-events: none;
+    }
+
+    @media (max-width: 767px) {
+      .hero-orb {
+        width: 140px;
+        height: 140px;
+        right: -26px;
+        top: -26px;
+      }
+    }
+
+    .hero-aside {
+      align-self: stretch;
+      position: relative;
+      z-index: 2;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 768px) {
+      .hero-aside {
+        max-width: 260px;
+        margin-top: 0;
+      }
+    }
+
+    .lang-switch {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+      gap: 6px;
+    }
+
+    .lang-btn {
+      font-size: 0.8rem;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .lang-btn span.flag {
+      font-size: 1rem;
+    }
+
+    .lang-btn.active {
+      background: #f9fafb;
+      color: #020617;
+      border-color: transparent;
+      transform: translateY(-1px);
+    }
+
+    .aside-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 20px;
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.5);
+      font-size: 0.78rem;
+      color: #e5e7eb;
+    }
+
+    .aside-card h3 {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #e0f2fe;
+    }
+
+    .dot-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 8px);
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .dot-grid span {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.7);
+      opacity: 0.7;
+      animation: pulseDots 2s ease-in-out infinite;
+    }
+
+    .dot-grid span:nth-child(2),
+    .dot-grid span:nth-child(5),
+    .dot-grid span:nth-child(10),
+    .dot-grid span:nth-child(15) {
+      background: var(--accent);
+    }
+
+    .dot-grid span:nth-child(2) { animation-delay: 0.1s; }
+    .dot-grid span:nth-child(5) { animation-delay: 0.25s; }
+    .dot-grid span:nth-child(10) { animation-delay: 0.45s; }
+    .dot-grid span:nth-child(15) { animation-delay: 0.65s; }
+
+    @keyframes pulseDots {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.4); opacity: 1; }
+    }
+
+    main {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #111827 0, #020617 55%);
+      border-radius: var(--radius-lg);
+      padding: 18px 16px 18px;
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 22px 22px 22px;
+      }
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 55%);
+      opacity: 0;
+      transition: opacity var(--transition-med);
+      pointer-events: none;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #e5e7eb;
+    }
+
+    .card-title-badge {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: #cbd5f5;
+    }
+
+    .card-body {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .card-body p {
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #9ca3af;
+    }
+
+    form#assessment-form {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .grid-basic {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .grid-basic {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.86rem;
+    }
+
+    .field label {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .field span.helper {
+      font-size: 0.76rem;
+      color: var(--text-soft);
+    }
+
+    input[type="number"],
+    select {
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color var(--transition-fast),
+        box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    input[type="number"]:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .question-section {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .question-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .question-section-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .question-section-desc {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .question {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      transition: border-color var(--transition-fast),
+        background var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .question:hover {
+      border-color: rgba(56, 189, 248, 0.7);
+      background: rgba(15, 23, 42, 1);
+      transform: translateY(-1px);
+    }
+
+    .question-label {
+      font-size: 0.86rem;
+      margin-bottom: 6px;
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.82rem;
+      margin-top: 2px;
+    }
+
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .option-row input[type="radio"] {
+      accent-color: var(--accent);
+    }
+
+    .option-label {
+      color: var(--text-soft);
+    }
+
+    .form-footer {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(55, 65, 81, 0.9);
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .form-footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin-top: 6px;
+    }
+
+    .note strong {
+      color: #e5e7eb;
+    }
+
+    .results-card {
+      opacity: 0;
+      transform: translateY(8px);
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.35s ease, transform 0.35s ease, max-height 0.35s ease;
+    }
+
+    .results-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 500px;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .result-pill {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 16px;
+      padding: 10px 11px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-pill::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .result-label {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .result-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #e5e7eb;
+    }
+
+    .result-tagline {
+      font-size: 0.8rem;
+      margin-top: 4px;
+      color: #e5e7eb;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-soft);
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .badge-dot.green {
+      background: var(--success);
+    }
+
+    .badge-dot.yellow {
+      background: var(--warn);
+    }
+
+    .badge-dot.red {
+      background: var(--danger);
+    }
+
+    .progress-bar-wrap {
+      margin-top: 6px;
+    }
+
+    .progress-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: var(--text-soft);
+      margin-bottom: 3px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #22c55e);
+      transition: width 0.35s ease-out;
+    }
+
+    footer {
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-orb"></div>
+      <div class="hero-inner">
+        <div class="hero-main">
+          <div class="hero-kicker">
+            <span class="hero-kicker-dot"></span>
+            <span data-i18n="kicker">Bilimsel esintili kişisel farkındalık / Science-inspired self-reflection</span>
+          </div>
+          <h1 class="hero-title" data-i18n="heroTitle">
+            Vücut & Zihin Yaşı Değerlendirmesi
+          </h1>
+          <p class="hero-subtitle" data-i18n="heroSubtitle">
+            Günlük alışkanlıkların, duygusal durumun, sosyal hayatın ve anlam arayışın üzerinden
+            beden ve zihin yaşını yaklaşık olarak keşfet. Bu araç tıbbi tanı yerine geçmez; sadece
+            merak ve farkındalık içindir.
+          </p>
+          <div class="hero-meta">
+            <span><span class="hero-meta-icon">⏱️</span><span data-i18n="metaTime">Süre: 5-7 dakika</span></span>
+            <span><span class="hero-meta-icon">🧠</span><span data-i18n="metaFocus">Fiziksel + psikolojik yaş</span></span>
+            <span><span class="hero-meta-icon">🔒</span><span data-i18n="metaPrivacy">Veriler tarayıcıda kalır, sunucuya gönderilmez</span></span>
+          </div>
+          <div class="hero-cta-row">
+            <button class="btn btn-primary" id="start-btn">
+              <span data-i18n="btnStart">Değerlendirmeye Başla</span> <span>▶</span>
+            </button>
+            <button class="btn btn-ghost" id="scroll-info-btn">
+              <span data-i18n="btnLearn">Nasıl çalışıyor?</span>
+            </button>
+          </div>
+        </div>
+        <div class="hero-aside">
+          <div class="lang-switch">
+            <button class="lang-btn active" data-lang="tr" id="lang-tr">
+              <span class="flag">🇹🇷</span> <span>Türkçe</span>
+            </button>
+            <button class="lang-btn" data-lang="en" id="lang-en">
+              <span class="flag">🇬🇧</span> <span>English</span>
+            </button>
+          </div>
+          <div class="aside-card">
+            <h3 data-i18n="asideTitle">Uyarı & Niyet</h3>
+            <p data-i18n="asideText">
+              Bu anket bir doktor, psikolog veya ruh sağlığı uzmanının yerini <strong>tutmaz</strong>.
+              Sonuçlar yaklaşık bir “farkındalık haritası” sunar. Kendinle daha dürüst
+              ve şefkatli bir diyalog kurmana yardım etmesi için tasarlandı.
+            </p>
+            <div class="dot-grid" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="card" id="info-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span data-i18n="infoTitle">Bu test neyi ölçüyor?</span>
+            <span class="card-title-badge" data-i18n="infoBadge">Fiziksel + psikolojik + sosyal boyut</span>
+          </h2>
+        </div>
+        <div class="card-body">
+          <p data-i18n="infoP1">
+            “Resmi” tıbbi bir yaş ölçümü yapmıyoruz. Bunun yerine, modern psikoloji, sağlık
+            bilimi ve sosyal bilimlerden ilham alarak beden ve zihin yaşını etkileyen temel
+            alanlara bakıyoruz: uyku, hareket, beslenme, sigara ve madde kullanımı, stres,
+            duygusal denge, sosyal ilişkiler, zihinsel canlılık ve hayat anlamı.
+          </p>
+          <p data-i18n="infoP2">
+            Soruların her biri, kronolojik yaşına göre seni birkaç yaş “daha genç” veya
+            “daha yaşlı” hissettirebilecek alışkanlıkları ve ruh hâllerini temsil eder. Sonuçlar
+            tahmindir; amaç, hayatında iyileştirmek veya korumak isteyebileceğin alanları
+            görmendir.
+          </p>
+          <div class="pill-row">
+            <span class="pill" data-i18n="pillPhys">🏃 Fiziksel alışkanlıklar</span>
+            <span class="pill" data-i18n="pillPsy">🧠 Duygusal & zihinsel durum</span>
+            <span class="pill" data-i18n="pillSocial">🤝 Sosyal bağlar</span>
+            <span class="pill" data-i18n="pillSpirit">✨ Anlam & ruhsal iyi oluş</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="form-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span data-i18n="formTitle">Kişisel Değerlendirme Formu</span>
+            <span class="card-title-badge" data-i18n="formBadge">Tahmini yaş hesaplama</span>
+          </h2>
+        </div>
+        <div class="card-body">
+          <form id="assessment-form">
+            <div class="grid-basic">
+              <div class="field">
+                <label for="age-input" data-i18n="labelAge">Kronolojik yaşın (yıl)</label>
+                <input
+                  type="number"
+                  id="age-input"
+                  name="age"
+                  min="10"
+                  max="100"
+                  required
+                  placeholder="Örn. 28" />
+                <span class="helper" data-i18n="helperAge">
+                  Bu, kimlikte yazan gerçek yaşın. Diğer sorular buna göre beden/zihin yaşını
+                  ayarlayacak.
+                </span>
+              </div>
+              <div class="field">
+                <label for="life-stage" data-i18n="labelStage">Kendini şu an hangi döneme yakın hissediyorsun?</label>
+                <select id="life-stage" name="lifeStage">
+                  <option value="early" data-i18n="stageEarly">Gençlik / erken yetişkinlik</option>
+                  <option value="mid" data-i18n="stageMid">Orta yaş</option>
+                  <option value="late" data-i18n="stageLate">İleri yaş / olgunluk</option>
+                  <option value="mixed" data-i18n="stageMixed">Karışık, bazen çok genç bazen çok yaşlı hissediyorum</option>
+                </select>
+                <span class="helper" data-i18n="helperStage">
+                  Bu bilgi, sonucu açıklarken yorum kısmında kullanılacak, doğrudan puanı değiştirmez.
+                </span>
+              </div>
+            </div>
+
+            <div id="question-sections"></div>
+
+            <div class="form-footer">
+              <div>
+                <span data-i18n="footerLeft">
+                  Soruların çoğu günlük hayata dair; lütfen mümkün olduğunca dürüst cevapla.
+                </span>
+              </div>
+              <div class="form-footer-right">
+                <span class="badge">
+                  <span class="badge-dot green"></span>
+                  <span data-i18n="badgePositive">İyi alışkanlıklar yaşı “gençleştirir”</span>
+                </span>
+                <span class="badge">
+                  <span class="badge-dot red"></span>
+                  <span data-i18n="badgeNegative">Riskli alışkanlıklar yaşı “ilerletir”</span>
+                </span>
+                <button type="submit" class="btn btn-primary">
+                  <span data-i18n="btnCalculate">Sonucu Hesapla</span> <span>📊</span>
+                </button>
+              </div>
+            </div>
+            <p class="note" data-i18n="noteDisclaimer">
+              <strong>Önemli:</strong> Sonuçlar kesin, klinik bir ölçüm değildir. Eğer fiziksel veya
+              ruhsal sağlığınla ilgili ciddi kaygıların varsa, mutlaka bir sağlık profesyoneline
+              danışmalısın.
+            </p>
+          </form>
+        </div>
+      </section>
+
+      <section class="card results-card" id="results-card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <span data-i18n="resultsTitle">Sonuçların</span>
+            <span class="card-title-badge" data-i18n="resultsBadge">Özet & öneriler</span>
+          </h2>
+        </div>
+        <div class="card-body">
+          <div class="results-grid">
+            <div class="result-pill">
+              <div class="result-label" data-i18n="resChronological">Kronolojik yaşın</div>
+              <div class="result-value"><span id="res-age-chronological">–</span></div>
+            </div>
+            <div class="result-pill">
+              <div class="result-label" data-i18n="resPhysical">Tahmini fiziksel vücut yaşın</div>
+              <div class="result-value"><span id="res-age-physical">–</span></div>
+              <div class="result-tagline" id="res-physical-tagline">—</div>
+            </div>
+            <div class="result-pill">
+              <div class="result-label" data-i18n="resPsychological">Tahmini psikolojik / ruhsal yaşın</div>
+              <div class="result-value"><span id="res-age-psychological">–</span></div>
+              <div class="result-tagline" id="res-psychological-tagline">—</div>
+            </div>
+            <div class="result-pill">
+              <div class="result-label" data-i18n="resWellness">Genel iyi oluş puanın</div>
+              <div class="result-value"><span id="res-wellness">–</span> / 100</div>
+              <div class="progress-bar-wrap">
+                <div class="progress-label-row">
+                  <span data-i18n="resScaleLow">Daha kırılgan</span>
+                  <span data-i18n="resScaleHigh">Daha dengeli</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" id="res-wellness-bar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="note" id="res-interpretation">
+            <!-- JS fills with language-specific text -->
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span data-i18n="footerText">
+        Bu araç yalnızca eğitim ve farkındalık amaçlıdır. Kodu GitHub’da barındırabilir, dilediğin gibi
+        düzenleyebilirsin.
+      </span>
+    </footer>
+  </div>
+
+  <script>
+    // --- UI TEXT (TR & EN) ---
+    const uiText = {
+      tr: {
+        kicker: "Bilimsel esintili kişisel farkındalık / Science-inspired self-reflection",
+        heroTitle: "Vücut & Zihin Yaşı Değerlendirmesi",
+        heroSubtitle:
+          "Günlük alışkanlıkların, duygusal durumun, sosyal hayatın ve anlam arayışın üzerinden beden ve zihin yaşını yaklaşık olarak keşfet. Bu araç tıbbi tanı yerine geçmez; sadece merak ve farkındalık içindir.",
+        metaTime: "Süre: 5-7 dakika",
+        metaFocus: "Fiziksel + psikolojik yaş",
+        metaPrivacy: "Veriler tarayıcıda kalır, sunucuya gönderilmez",
+        btnStart: "Değerlendirmeye Başla",
+        btnLearn: "Nasıl çalışıyor?",
+        asideTitle: "Uyarı & Niyet",
+        asideText:
+          "Bu anket bir doktor, psikolog veya ruh sağlığı uzmanının yerini <strong>tutmaz</strong>. Sonuçlar yaklaşık bir “farkındalık haritası” sunar. Kendinle daha dürüst ve şefkatli bir diyalog kurmana yardım etmesi için tasarlandı.",
+        infoTitle: "Bu test neyi ölçüyor?",
+        infoBadge: "Fiziksel + psikolojik + sosyal boyut",
+        infoP1:
+          "“Resmi” tıbbi bir yaş ölçümü yapmıyoruz. Bunun yerine, modern psikoloji, sağlık bilimi ve sosyal bilimlerden ilham alarak beden ve zihin yaşını etkileyen temel alanlara bakıyoruz: uyku, hareket, beslenme, sigara ve madde kullanımı, stres, duygusal denge, sosyal ilişkiler, zihinsel canlılık ve hayat anlamı.",
+        infoP2:
+          "Soruların her biri, kronolojik yaşına göre seni birkaç yaş “daha genç” veya “daha yaşlı” hissettirebilecek alışkanlıkları ve ruh hâllerini temsil eder. Sonuçlar tahmindir; amaç, hayatında iyileştirmek veya korumak isteyebileceğin alanları görmendir.",
+        pillPhys: "🏃 Fiziksel alışkanlıklar",
+        pillPsy: "🧠 Duygusal & zihinsel durum",
+        pillSocial: "🤝 Sosyal bağlar",
+        pillSpirit: "✨ Anlam & ruhsal iyi oluş",
+        formTitle: "Kişisel Değerlendirme Formu",
+        formBadge: "Tahmini yaş hesaplama",
+        labelAge: "Kronolojik yaşın (yıl)",
+        helperAge:
+          "Bu, kimlikte yazan gerçek yaşın. Diğer sorular buna göre beden/zihin yaşını ayarlayacak.",
+        labelStage: "Kendini şu an hangi döneme yakın hissediyorsun?",
+        stageEarly: "Gençlik / erken yetişkinlik",
+        stageMid: "Orta yaş",
+        stageLate: "İleri yaş / olgunluk",
+        stageMixed: "Karışık, bazen çok genç bazen çok yaşlı hissediyorum",
+        helperStage:
+          "Bu bilgi, sonucu açıklarken yorum kısmında kullanılacak, doğrudan puanı değiştirmez.",
+        footerLeft:
+          "Soruların çoğu günlük hayata dair; lütfen mümkün olduğunca dürüst cevapla.",
+        badgePositive: "İyi alışkanlıklar yaşı “gençleştirir”",
+        badgeNegative: "Riskli alışkanlıklar yaşı “ilerletir”",
+        btnCalculate: "Sonucu Hesapla",
+        noteDisclaimer:
+          "<strong>Önemli:</strong> Sonuçlar kesin, klinik bir ölçüm değildir. Eğer fiziksel veya ruhsal sağlığınla ilgili ciddi kaygıların varsa, mutlaka bir sağlık profesyoneline danışmalısın.",
+        resultsTitle: "Sonuçların",
+        resultsBadge: "Özet & öneriler",
+        resChronological: "Kronolojik yaşın",
+        resPhysical: "Tahmini fiziksel vücut yaşın",
+        resPsychological: "Tahmini psikolojik / ruhsal yaşın",
+        resWellness: "Genel iyi oluş puanın",
+        resScaleLow: "Daha kırılgan",
+        resScaleHigh: "Daha dengeli",
+        footerText:
+          "Bu araç yalnızca eğitim ve farkındalık amaçlıdır. Kodu GitHub’da barındırabilir, dilediğin gibi düzenleyebilirsin.",
+      },
+      en: {
+        kicker: "Science-inspired self-reflection",
+        heroTitle: "Body & Mind Age Assessment",
+        heroSubtitle:
+          "Estimate your body and mind age through your daily habits, emotional life, social connections, and sense of meaning. This tool is not a medical diagnosis; it is for curiosity and awareness only.",
+        metaTime: "Time: 5-7 minutes",
+        metaFocus: "Physical + psychological age",
+        metaPrivacy: "Data stays in your browser, not sent to any server",
+        btnStart: "Start Assessment",
+        btnLearn: "How does it work?",
+        asideTitle: "Disclaimer & Intent",
+        asideText:
+          "This questionnaire does <strong>not</strong> replace a doctor, psychologist, or mental health professional. Results are an approximate “awareness map”, designed to help you talk to yourself more honestly and kindly.",
+        infoTitle: "What does this test measure?",
+        infoBadge: "Physical + psychological + social layers",
+        infoP1:
+          "We are not providing an official medical age test. Instead, inspired by modern psychology, health sciences and social sciences, we look at key areas that influence body and mind age: sleep, movement, nutrition, smoking and substance use, stress, emotional balance, social connections, mental activity, and sense of meaning.",
+        infoP2:
+          "Each question represents habits and inner states that could make you feel a few years “younger” or “older” than your chronological age. Results are estimates; the goal is to highlight areas you may want to protect or improve.",
+        pillPhys: "🏃 Physical habits",
+        pillPsy: "🧠 Emotional & mental state",
+        pillSocial: "🤝 Social bonds",
+        pillSpirit: "✨ Meaning & spiritual well-being",
+        formTitle: "Personal Assessment Form",
+        formBadge: "Estimated age calculation",
+        labelAge: "Chronological age (years)",
+        helperAge:
+          "This is your actual age. Other answers will shift your body/mind age around this value.",
+        labelStage: "Which life stage do you feel closest to right now?",
+        stageEarly: "Youth / early adulthood",
+        stageMid: "Midlife",
+        stageLate: "Later life / mature",
+        stageMixed: "Mixed, sometimes very young sometimes quite old",
+        helperStage:
+          "Used only to describe the results in words; it does not directly change your score.",
+        footerLeft:
+          "Most questions are about your real daily life; please answer as honestly as possible.",
+        badgePositive: "Supportive habits “rejuvenate” your age",
+        badgeNegative: "Risky habits “age” you faster",
+        btnCalculate: "Calculate Results",
+        noteDisclaimer:
+          "<strong>Important:</strong> These results are not a precise clinical measurement. If you have serious concerns about your physical or mental health, please talk to a health professional.",
+        resultsTitle: "Your Results",
+        resultsBadge: "Summary & reflections",
+        resChronological: "Your chronological age",
+        resPhysical: "Estimated physical body age",
+        resPsychological: "Estimated psychological / inner age",
+        resWellness: "Overall well-being score",
+        resScaleLow: "More fragile",
+        resScaleHigh: "More balanced",
+        footerText:
+          "This tool is for education and self-reflection only. You can host the code on GitHub and modify it freely.",
+      },
+    };
+
+    // --- QUESTION DEFINITIONS ---
+    const questionSectionsDef = [
+      {
+        id: "movement",
+        title: {
+          tr: "Hareket & fiziksel aktivite",
+          en: "Movement & physical activity",
+        },
+        desc: {
+          tr: "Günlük hareket düzeyin, kas ve kalp-damar sistemini doğrudan etkiler.",
+          en: "Your daily movement strongly influences muscles and cardiovascular health.",
+        },
+        questions: [
+          {
+            id: "movement_frequency",
+            text: {
+              tr: "Haftada kaç gün en az 20-30 dakika tempolu yürüme, koşu, bisiklet veya benzeri aktivite yapıyorsun?",
+              en: "How many days per week do you get at least 20–30 minutes of brisk walking, running, cycling or similar activity?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Hemen hemen hiç", en: "Almost never" },
+                physDelta: +5,
+                psychDelta: +1,
+                wellnessDelta: -6,
+              },
+              {
+                value: "b",
+                text: { tr: "Haftada 1–2 gün", en: "1–2 days per week" },
+                physDelta: +2,
+                psychDelta: 0,
+                wellnessDelta: -2,
+              },
+              {
+                value: "c",
+                text: { tr: "Haftada 3–4 gün", en: "3–4 days per week" },
+                physDelta: -2,
+                psychDelta: -1,
+                wellnessDelta: +4,
+              },
+              {
+                value: "d",
+                text: { tr: "Haftada 5+ gün", en: "5+ days per week" },
+                physDelta: -4,
+                psychDelta: -2,
+                wellnessDelta: +6,
+              },
+            ],
+          },
+          {
+            id: "sedentary_hours",
+            text: {
+              tr: "Günde ortalama kaç saat oturarak (bilgisayar, TV, masa başı) geçiriyorsun?",
+              en: "On an average day, how many hours do you spend sitting (computer, TV, desk)?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "9 saatten fazla", en: "More than 9 hours" },
+                physDelta: +4,
+                psychDelta: +1,
+                wellnessDelta: -5,
+              },
+              {
+                value: "b",
+                text: { tr: "7–9 saat", en: "7–9 hours" },
+                physDelta: +2,
+                psychDelta: 0,
+                wellnessDelta: -2,
+              },
+              {
+                value: "c",
+                text: { tr: "4–6 saat", en: "4–6 hours" },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: +1,
+              },
+              {
+                value: "d",
+                text: { tr: "4 saatten az", en: "Less than 4 hours" },
+                physDelta: -2,
+                psychDelta: 0,
+                wellnessDelta: +4,
+              },
+            ],
+          },
+          {
+            id: "mobility",
+            text: {
+              tr: "Merdiven çıkma, hızlı yürüme gibi efor gerektiren hareketlerde ne kadar zorlanıyorsun?",
+              en: "How much do you struggle with effortful movement like climbing stairs or walking fast?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Çok zorlanıyorum", en: "I struggle a lot" },
+                physDelta: +4,
+                psychDelta: +2,
+                wellnessDelta: -4,
+              },
+              {
+                value: "b",
+                text: { tr: "Biraz zorlanıyorum", en: "I struggle a bit" },
+                physDelta: +2,
+                psychDelta: +1,
+                wellnessDelta: -2,
+              },
+              {
+                value: "c",
+                text: { tr: "Pek zorlanmıyorum", en: "Not much struggle" },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: +1,
+              },
+              {
+                value: "d",
+                text: { tr: "Rahatlıkla yapabiliyorum", en: "I can do it with ease" },
+                physDelta: -3,
+                psychDelta: -1,
+                wellnessDelta: +4,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "lifestyle",
+        title: {
+          tr: "Uyku, beslenme & günlük yaşam",
+          en: "Sleep, nutrition & daily life",
+        },
+        desc: {
+          tr: "Uyku kalitesi ve beslenme, hem bağışıklık hem duygu durum için kritik.",
+          en: "Sleep and nutrition strongly impact immunity and mood.",
+        },
+        questions: [
+          {
+            id: "sleep_hours",
+            text: {
+              tr: "Haftanın çoğu gecesinde ortalama kaç saat uyuyorsun?",
+              en: "On most nights, how many hours of sleep do you get?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "5 saatten az", en: "Less than 5 hours" },
+                physDelta: +4,
+                psychDelta: +2,
+                wellnessDelta: -6,
+              },
+              {
+                value: "b",
+                text: { tr: "5–6 saat", en: "5–6 hours" },
+                physDelta: +2,
+                psychDelta: +1,
+                wellnessDelta: -2,
+              },
+              {
+                value: "c",
+                text: { tr: "7–8 saat", en: "7–8 hours" },
+                physDelta: -3,
+                psychDelta: -2,
+                wellnessDelta: +5,
+              },
+              {
+                value: "d",
+                text: { tr: "9+ saat", en: "9+ hours" },
+                physDelta: 0,
+                psychDelta: +1,
+                wellnessDelta: -1,
+              },
+            ],
+          },
+          {
+            id: "sleep_quality",
+            text: {
+              tr: "Sabahları uyandığında kendini ne kadar dinlenmiş hissediyorsun?",
+              en: "How rested do you feel when you wake up in the morning?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Çok yorgun", en: "Very tired" },
+                physDelta: +3,
+                psychDelta: +3,
+                wellnessDelta: -5,
+              },
+              {
+                value: "b",
+                text: { tr: "Genelde yorgun", en: "Mostly tired" },
+                physDelta: +2,
+                psychDelta: +1,
+                wellnessDelta: -2,
+              },
+              {
+                value: "c",
+                text: { tr: "Orta", en: "In between" },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: +1,
+              },
+              {
+                value: "d",
+                text: { tr: "Çoğunlukla dinlenmiş", en: "Mostly rested" },
+                physDelta: -2,
+                psychDelta: -1,
+                wellnessDelta: +4,
+              },
+            ],
+          },
+          {
+            id: "nutrition",
+            text: {
+              tr: "Genel beslenme düzenini hangisi daha iyi tarif ediyor?",
+              en: "Which best describes your usual eating pattern?",
+            },
+            options: [
+              {
+                value: "a",
+                text: {
+                  tr: "Düzensiz, çok işlenmiş/fast-food ağırlıklı",
+                  en: "Irregular, heavy on processed/fast food",
+                },
+                physDelta: +3,
+                psychDelta: +1,
+                wellnessDelta: -4,
+              },
+              {
+                value: "b",
+                text: {
+                  tr: "Dönem dönem dikkat ediyorum, dönem dönem dağılıyor",
+                  en: "Sometimes balanced, sometimes quite off",
+                },
+                physDelta: +1,
+                psychDelta: 0,
+                wellnessDelta: -1,
+              },
+              {
+                value: "c",
+                text: {
+                  tr: "Genelde dengeli, sebze/meyve/sağlıklı yağlar var",
+                  en: "Mostly balanced with veggies, fruits, healthy fats",
+                },
+                physDelta: -2,
+                psychDelta: -1,
+                wellnessDelta: +4,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Özel bir sağlık problemi nedeniyle ekstra dikkatli besleniyorum",
+                  en: "Very carefully due to a specific health condition",
+                },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: +2,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "substance",
+        title: {
+          tr: "Sigara, madde & alkol kullanımı",
+          en: "Smoking, substances & alcohol",
+        },
+        desc: {
+          tr: "Bu alan, özellikle fiziksel yaş üzerinde güçlü etkiye sahiptir.",
+          en: "These factors can strongly affect physical age and overall health.",
+        },
+        questions: [
+          {
+            id: "smoking",
+            text: {
+              tr: "Sigara veya elektronik sigara (vape) kullanımı durumun nedir?",
+              en: "What best describes your smoking or vaping status?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Hiç kullanmadım", en: "Never smoked/vaped" },
+                physDelta: -3,
+                psychDelta: 0,
+                wellnessDelta: +4,
+              },
+              {
+                value: "b",
+                text: {
+                  tr: "Bıraktım (en az 1 yıldır içmiyorum)",
+                  en: "I quit (no use for at least 1 year)",
+                },
+                physDelta: -1,
+                psychDelta: +1,
+                wellnessDelta: +3,
+              },
+              {
+                value: "c",
+                text: {
+                  tr: "Ara sıra kullanıyorum",
+                  en: "I use occasionally",
+                },
+                physDelta: +2,
+                psychDelta: 0,
+                wellnessDelta: -3,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Düzenli kullanıyorum (hemen her gün)",
+                  en: "I use regularly (almost every day)",
+                },
+                physDelta: +5,
+                psychDelta: +1,
+                wellnessDelta: -6,
+              },
+            ],
+          },
+          {
+            id: "alcohol",
+            text: {
+              tr: "Alkol kullanımı durumun nedir?",
+              en: "How would you describe your alcohol use?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Hiç kullanmıyorum", en: "I do not drink" },
+                physDelta: -1,
+                psychDelta: 0,
+                wellnessDelta: +2,
+              },
+              {
+                value: "b",
+                text: { tr: "Ayda 1–2 kez sosyal içici", en: "Social, 1–2 times per month" },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: 0,
+              },
+              {
+                value: "c",
+                text: {
+                  tr: "Haftada birkaç kez",
+                  en: "A few times per week",
+                },
+                physDelta: +2,
+                psychDelta: +1,
+                wellnessDelta: -3,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Çok sık / kontrol etmekte zorlanıyorum",
+                  en: "Very often / I have difficulty limiting it",
+                },
+                physDelta: +4,
+                psychDelta: +3,
+                wellnessDelta: -7,
+              },
+            ],
+          },
+          {
+            id: "other_substances",
+            text: {
+              tr: "Doktor reçetesi dışında keyif verici madde kullanımı için hangisi sana daha yakın?",
+              en: "Regarding recreational substance use (outside prescribed meds), which fits you best?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Hiç kullanmıyorum", en: "I do not use" },
+                physDelta: -1,
+                psychDelta: 0,
+                wellnessDelta: +2,
+              },
+              {
+                value: "b",
+                text: {
+                  tr: "Nadiren / deneme seviyesinde",
+                  en: "Rarely / experimental",
+                },
+                physDelta: +1,
+                psychDelta: +1,
+                wellnessDelta: -2,
+              },
+              {
+                value: "c",
+                text: {
+                  tr: "Düzenli kullanıyorum ama sorun olarak görmüyorum",
+                  en: "Regular use but I do not see it as a problem",
+                },
+                physDelta: +3,
+                psychDelta: +2,
+                wellnessDelta: -5,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Kontrol etmekte zorlanıyorum / bırakmayı düşünüyorum",
+                  en: "I find it hard to control / I consider quitting",
+                },
+                physDelta: +4,
+                psychDelta: +4,
+                wellnessDelta: -8,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "mental",
+        title: {
+          tr: "Stres, duygu durumu & düşünce",
+          en: "Stress, mood & thinking",
+        },
+        desc: {
+          tr: "Duygusal yük, zihin yaşını ve beden tepkilerini ciddi şekilde etkileyebilir.",
+          en: "Emotional load influences mind age and the body’s response to stress.",
+        },
+        questions: [
+          {
+            id: "stress_level",
+            text: {
+              tr: "Son haftalarda genel stres düzeyini nasıl tarif edersin?",
+              en: "In recent weeks, how would you describe your general stress level?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Çok yüksek", en: "Very high" },
+                physDelta: +3,
+                psychDelta: +4,
+                wellnessDelta: -8,
+              },
+              {
+                value: "b",
+                text: { tr: "Yüksek ama idare ediyorum", en: "High but manageable" },
+                physDelta: +2,
+                psychDelta: +2,
+                wellnessDelta: -4,
+              },
+              {
+                value: "c",
+                text: { tr: "Orta", en: "Moderate" },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: +1,
+              },
+              {
+                value: "d",
+                text: { tr: "Düşük", en: "Low" },
+                physDelta: -1,
+                psychDelta: -2,
+                wellnessDelta: +4,
+              },
+            ],
+          },
+          {
+            id: "emotional_regulation",
+            text: {
+              tr: "Duygularını (öfke, üzüntü, kaygı) fark etme ve yönetme becerini nasıl görüyorsun?",
+              en: "How do you see your ability to notice and regulate emotions (anger, sadness, anxiety)?",
+            },
+            options: [
+              {
+                value: "a",
+                text: {
+                  tr: "Çok zorlanıyorum, bazen kontrol dışı hissediyorum",
+                  en: "I struggle a lot, sometimes feel out of control",
+                },
+                physDelta: +1,
+                psychDelta: +4,
+                wellnessDelta: -7,
+              },
+              {
+                value: "b",
+                text: {
+                  tr: "Zorlandığım zamanlar oluyor",
+                  en: "I struggle at times",
+                },
+                physDelta: 0,
+                psychDelta: +2,
+                wellnessDelta: -3,
+              },
+              {
+                value: "c",
+                text: {
+                  tr: "Genelde fark edip yönetebiliyorum",
+                  en: "Usually notice and regulate okay",
+                },
+                physDelta: 0,
+                psychDelta: -1,
+                wellnessDelta: +3,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Oldukça olgun ve dengeli hissediyorum",
+                  en: "I feel quite mature and balanced",
+                },
+                physDelta: -1,
+                psychDelta: -3,
+                wellnessDelta: +6,
+              },
+            ],
+          },
+          {
+            id: "learning_curiosity",
+            text: {
+              tr: "Yeni şeyler öğrenme, okuma, zihinsel olarak kendini zorlama isteğin nasıl?",
+              en: "How strong is your drive to learn new things, read, and mentally challenge yourself?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Pek yok", en: "Not much" },
+                physDelta: 0,
+                psychDelta: +3,
+                wellnessDelta: -3,
+              },
+              {
+                value: "b",
+                text: { tr: "Bazen var", en: "Sometimes" },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: +1,
+              },
+              {
+                value: "c",
+                text: { tr: "Düzenli olarak var", en: "Regularly active" },
+                physDelta: 0,
+                psychDelta: -2,
+                wellnessDelta: +4,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Çok güçlü, sürekli öğreniyorum",
+                  en: "Very strong, I’m constantly learning",
+                },
+                physDelta: 0,
+                psychDelta: -3,
+                wellnessDelta: +6,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "social",
+        title: {
+          tr: "Sosyal bağlar & destek",
+          en: "Social bonds & support",
+        },
+        desc: {
+          tr: "Sağlıklı ilişkiler hem beden hem zihin için koruyucudur.",
+          en: "Supportive relationships protect both body and mind.",
+        },
+        questions: [
+          {
+            id: "social_support",
+            text: {
+              tr: "Zorlandığında içini açabileceğin en az bir–iki insanın olduğunu hissediyor musun?",
+              en: "Do you feel you have at least one–two people you can open up to when life is hard?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Hayır, hiç yok", en: "No, not really" },
+                physDelta: +1,
+                psychDelta: +4,
+                wellnessDelta: -7,
+              },
+              {
+                value: "b",
+                text: { tr: "Var ama çok uzak / kopuk hissediyorum", en: "Kind of, but I feel distant" },
+                physDelta: 0,
+                psychDelta: +2,
+                wellnessDelta: -3,
+              },
+              {
+                value: "c",
+                text: { tr: "Var, zaman zaman paylaşıyorum", en: "Yes, and I share sometimes" },
+                physDelta: 0,
+                psychDelta: -1,
+                wellnessDelta: +3,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Evet, düzenli ve samimi paylaşımlarım var",
+                  en: "Yes, we share deeply and regularly",
+                },
+                physDelta: -1,
+                psychDelta: -3,
+                wellnessDelta: +6,
+              },
+            ],
+          },
+          {
+            id: "loneliness",
+            text: {
+              tr: "Son aylarda kendini ne sıklıkla yalnız veya kopuk hissediyorsun?",
+              en: "In recent months, how often have you felt lonely or disconnected?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Hemen her gün", en: "Almost every day" },
+                physDelta: +1,
+                psychDelta: +4,
+                wellnessDelta: -7,
+              },
+              {
+                value: "b",
+                text: { tr: "Haftada birkaç kez", en: "A few times per week" },
+                physDelta: 0,
+                psychDelta: +2,
+                wellnessDelta: -3,
+              },
+              {
+                value: "c",
+                text: { tr: "Ara sıra", en: "Sometimes" },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: +1,
+              },
+              {
+                value: "d",
+                text: { tr: "Nadiren / pek değil", en: "Rarely / not much" },
+                physDelta: -1,
+                psychDelta: -2,
+                wellnessDelta: +5,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "meaning",
+        title: {
+          tr: "Anlam, ruhsal yön & değerler",
+          en: "Meaning, spiritual side & values",
+        },
+        desc: {
+          tr: "İnsanın ruhsal dünyası, hayata bakışı ve olgunluk hissiyle yakından bağlantılı.",
+          en: "Your inner spiritual world is closely linked to your sense of maturity and direction.",
+        },
+        questions: [
+          {
+            id: "meaning",
+            text: {
+              tr: "Hayatının bir anlamı, yönü veya değere dayalı bir amacı olduğunu ne kadar hissediyorsun?",
+              en: "How strongly do you feel that your life has meaning, direction, or value-based purpose?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Neredeyse hiç hissetmiyorum", en: "Almost not at all" },
+                physDelta: 0,
+                psychDelta: +4,
+                wellnessDelta: -7,
+              },
+              {
+                value: "b",
+                text: { tr: "Bazen hissediyorum", en: "Sometimes I do" },
+                physDelta: 0,
+                psychDelta: +1,
+                wellnessDelta: -1,
+              },
+              {
+                value: "c",
+                text: { tr: "Çoğunlukla hissediyorum", en: "Mostly I do" },
+                physDelta: 0,
+                psychDelta: -2,
+                wellnessDelta: +4,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Çok net, kalbimde güçlü bir anlam hissi var",
+                  en: "Very strongly, I feel a clear sense of meaning",
+                },
+                physDelta: -1,
+                psychDelta: -3,
+                wellnessDelta: +7,
+              },
+            ],
+          },
+          {
+            id: "reflection",
+            text: {
+              tr: "Kendi iç dünyanı (niyetlerin, nefis, hatalar, iyileşme) üzerine düzenli olarak düşünüyor musun?",
+              en: "Do you regularly reflect on your inner world (intentions, ego, mistakes, growth)?",
+            },
+            options: [
+              {
+                value: "a",
+                text: { tr: "Pek düşünmüyorum", en: "Not really" },
+                physDelta: 0,
+                psychDelta: +3,
+                wellnessDelta: -3,
+              },
+              {
+                value: "b",
+                text: { tr: "Ara sıra", en: "From time to time" },
+                physDelta: 0,
+                psychDelta: 0,
+                wellnessDelta: +1,
+              },
+              {
+                value: "c",
+                text: {
+                  tr: "Düzenli, ama bazen yüzleşmek zor geliyor",
+                  en: "Regularly, though sometimes it’s hard to face",
+                },
+                physDelta: 0,
+                psychDelta: -1,
+                wellnessDelta: +3,
+              },
+              {
+                value: "d",
+                text: {
+                  tr: "Düzenli, dürüst ve geliştirici bir şekilde",
+                  en: "Regularly, honestly and as a tool for growth",
+                },
+                physDelta: 0,
+                psychDelta: -3,
+                wellnessDelta: +6,
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    let currentLang = "tr";
+
+    function updateStaticTexts() {
+      const dict = uiText[currentLang];
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (!dict[key]) return;
+        if (dict[key].includes("<strong")) {
+          el.innerHTML = dict[key];
+        } else {
+          el.textContent = dict[key];
+        }
+      });
+
+      // Update select options text for life stage
+      const stageOptions = [
+        "stageEarly",
+        "stageMid",
+        "stageLate",
+        "stageMixed",
+      ];
+      const select = document.getElementById("life-stage");
+      if (select) {
+        Array.from(select.options).forEach((opt, idx) => {
+          const key = stageOptions[idx];
+          if (dict[key]) opt.textContent = dict[key];
+        });
+      }
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById("question-sections");
+      container.innerHTML = "";
+
+      questionSectionsDef.forEach((section) => {
+        const secEl = document.createElement("div");
+        secEl.className = "question-section";
+
+        const header = document.createElement("div");
+        header.className = "question-section-header";
+
+        const title = document.createElement("div");
+        title.className = "question-section-title";
+        title.textContent = section.title[currentLang];
+
+        const desc = document.createElement("div");
+        desc.className = "question-section-desc";
+        desc.textContent = section.desc[currentLang];
+
+        header.appendChild(title);
+        header.appendChild(desc);
+        secEl.appendChild(header);
+
+        section.questions.forEach((q) => {
+          const qEl = document.createElement("div");
+          qEl.className = "question";
+
+          const label = document.createElement("div");
+          label.className = "question-label";
+          label.textContent = q.text[currentLang];
+          qEl.appendChild(label);
+
+          const optsEl = document.createElement("div");
+          optsEl.className = "options";
+
+          q.options.forEach((opt) => {
+            const row = document.createElement("label");
+            row.className = "option-row";
+
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.name = q.id;
+            input.value = opt.value;
+
+            const span = document.createElement("span");
+            span.className = "option-label";
+            span.textContent = opt.text[currentLang];
+
+            row.appendChild(input);
+            row.appendChild(span);
+            optsEl.appendChild(row);
+          });
+
+          qEl.appendChild(optsEl);
+          secEl.appendChild(qEl);
+        });
+
+        container.appendChild(secEl);
+      });
+    }
+
+    function clamp(num, min, max) {
+      return Math.min(Math.max(num, min), max);
+    }
+
+    function interpretDifference(diff, lang, isPhysical) {
+      const younger = diff < -2;
+      const older = diff > 2;
+
+      if (lang === "tr") {
+        if (!younger && !older) {
+          return isPhysical
+            ? "Beden yaşın kronolojik yaşına yakın görünüyor. Mevcut alışkanlıklarını korumak önemli."
+            : "Zihinsel/ruhsal yaşın kronolojik yaşına yakın. Duygusal farkındalık ve anlam arayışını sürdürmek değerli.";
+        }
+        if (younger) {
+          return isPhysical
+            ? "Beden olarak kronolojik yaşından daha genç bir profil veriyorsun. Hareket, uyku ve beslenme alışkanlıkların iyi bir koruyucu gibi görünüyor."
+            : "İç dünyan kronolojik yaşından daha genç ve esnek görünüyor. Merak, öğrenme ve duygusal esneklik güçlü bir kaynak.";
+        }
+        if (older) {
+          return isPhysical
+            ? "Beden yaşın kronolojik yaşından daha ileri görünmekte. Hareket, uyku, beslenme ve madde kullanımı alanlarında küçük değişiklikler bile uzun vadede büyük fark yaratabilir."
+            : "Ruhsal/zihinsel yaşın kronolojik yaşından daha yorgun veya ağır hissediyor olabilir. Stres, yalnızlık ve anlam arayışı üzerinde şefkatle durmak iyi bir başlangıç olabilir.";
+        }
+      } else {
+        if (!younger && !older) {
+          return isPhysical
+            ? "Your body age is close to your chronological age. Protecting your current habits matters."
+            : "Your psychological/inner age is close to your chronological age. Keeping your emotional awareness and sense of meaning is valuable.";
+        }
+        if (younger) {
+          return isPhysical
+            ? "Your body looks younger than your chronological age. Movement, sleep and nutrition seem to support you well."
+            : "Your inner world looks younger and more flexible than your chronological age. Curiosity, learning and emotional flexibility are a strong resource.";
+        }
+        if (older) {
+          return isPhysical
+            ? "Your body age appears ahead of your chronological age. Small changes in movement, sleep, nutrition and substance use can make a big difference over time."
+            : "Your inner/psychological age may feel heavier or more tired than your chronological age. Gently working with stress, loneliness and meaning can be a powerful start.";
+        }
+      }
+      return "";
+    }
+
+    function buildInterpretation(age, phys, psych, wellness, lifeStage) {
+      const lang = currentLang;
+      const diffPhys = phys - age;
+      const diffPsych = psych - age;
+
+      const physText = interpretDifference(diffPhys, lang, true);
+      const psychText = interpretDifference(diffPsych, lang, false);
+
+      let stageNote = "";
+      if (lang === "tr") {
+        if (lifeStage === "early") {
+          stageNote =
+            "Kendini daha çok gençlik/erken yetişkinlik dönemine yakın hissediyorsun. Enerjini yönetirken, sınır koyma ve sürdürülebilirlik de önemli.";
+        } else if (lifeStage === "mid") {
+          stageNote =
+            "Orta yaş hissi, hem sorumlulukların hem de kendini yeniden keşfetme fırsatlarının yoğun olduğu bir dönem olabilir.";
+        } else if (lifeStage === "late") {
+          stageNote =
+            "İleri yaş/olgunluk hissi, tecrübe ve iç görüyle birleştiğinde güçlü bir bilgelik kaynağı olabilir.";
+        } else if (lifeStage === "mixed") {
+          stageNote =
+            "Bazen çok genç bazen çok yaşlı hissetmek, birçok insanın paylaştığı dalgalı bir deneyim. Bu test, bu dalga hâllerini daha iyi anlamana yardımcı olabilir.";
+        }
+      } else {
+        if (lifeStage === "early") {
+          stageNote =
+            "You feel closer to youth/early adulthood. It can help to balance your energy with boundaries and sustainable habits.";
+        } else if (lifeStage === "mid") {
+          stageNote =
+            "Feeling in midlife often comes with both responsibilities and chances to reinvent yourself.";
+        } else if (lifeStage === "late") {
+          stageNote =
+            "Feeling in a later/mature stage can be a deep source of wisdom when combined with self-care.";
+        } else if (lifeStage === "mixed") {
+          stageNote =
+            "Feeling sometimes very young and sometimes very old is common. This test can help you map those waves more clearly.";
+        }
+      }
+
+      let wellnessNote = "";
+      if (lang === "tr") {
+        if (wellness >= 75) {
+          wellnessNote =
+            "Genel iyi oluş puanın oldukça dengeli görünüyor. Güçlü alanlarını koruyup, daha zayıf halkaları küçük adımlarla destekleyebilirsin.";
+        } else if (wellness >= 50) {
+          wellnessNote =
+            "Genel iyi oluşun orta–iyi aralığında. Birkaç alanda küçük ama kalıcı değişiklikler, hissedilir bir iyileşme yaratabilir.";
+        } else {
+          wellnessNote =
+            "Genel iyi oluş puanın daha kırılgan bir noktada olabilir. Özellikle stres, uyku, maddeler ve yalnızlık alanlarında destek almak önemli olabilir.";
+        }
+      } else {
+        if (wellness >= 75) {
+          wellnessNote =
+            "Your overall well-being looks quite balanced. Protect your strong areas and gently support the weaker links.";
+        } else if (wellness >= 50) {
+          wellnessNote =
+            "Your well-being is in a mid–good range. Small, consistent changes in a few areas can have a big impact.";
+        } else {
+          wellnessNote =
+            "Your well-being score suggests some fragility. Getting support around stress, sleep, substances and loneliness can be very important.";
+        }
+      }
+
+      if (lang === "tr") {
+        return (
+          physText +
+          " " +
+          psychText +
+          " " +
+          wellnessNote +
+          " " +
+          (stageNote ? "\n\n" + stageNote : "")
+        );
+      } else {
+        return (
+          physText +
+          " " +
+          psychText +
+          " " +
+          wellnessNote +
+          " " +
+          (stageNote ? "\n\n" + stageNote : "")
+        );
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("loaded");
+      renderQuestions();
+      updateStaticTexts();
+
+      const langButtons = document.querySelectorAll(".lang-btn");
+      langButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const lang = btn.getAttribute("data-lang");
+          if (lang === currentLang) return;
+          currentLang = lang;
+          langButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          // Reset form when changing language
+          const form = document.getElementById("assessment-form");
+          if (form) form.reset();
+          renderQuestions();
+          updateStaticTexts();
+        });
+      });
+
+      document.getElementById("start-btn").addEventListener("click", () => {
+        const formCard = document.getElementById("form-card");
+        formCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      document
+        .getElementById("scroll-info-btn")
+        .addEventListener("click", () => {
+          const infoCard = document.getElementById("info-card");
+          infoCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+
+      const form = document.getElementById("assessment-form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const ageInput = document.getElementById("age-input");
+        const ageVal = parseInt(ageInput.value, 10);
+        if (isNaN(ageVal) || ageVal < 10 || ageVal > 100) {
+          ageInput.focus();
+          ageInput.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+          return;
+        }
+
+        let physAge = ageVal;
+        let psychAge = ageVal;
+        let wellness = 50;
+        let answered = 0;
+
+        questionSectionsDef.forEach((section) => {
+          section.questions.forEach((q) => {
+            const selected = form.querySelector(`input[name="${q.id}"]:checked`);
+            if (!selected) return;
+            const value = selected.value;
+            const opt = q.options.find((o) => o.value === value);
+            if (!opt) return;
+            physAge += opt.physDelta;
+            psychAge += opt.psychDelta;
+            wellness += opt.wellnessDelta;
+            answered += 1;
+          });
+        });
+
+        if (answered === 0) {
+          wellness = 50;
+        } else {
+          wellness = clamp(wellness, 0, 100);
+        }
+
+        physAge = clamp(Math.round(physAge), 5, 110);
+        psychAge = clamp(Math.round(psychAge), 5, 110);
+
+        document.getElementById("res-age-chronological").textContent = ageVal;
+        document.getElementById("res-age-physical").textContent = physAge;
+        document.getElementById("res-age-psychological").textContent =
+          psychAge;
+        document.getElementById("res-wellness").textContent = wellness;
+
+        const bar = document.getElementById("res-wellness-bar");
+        bar.style.width = wellness + "%";
+
+        const lifeStage = document.getElementById("life-stage").value;
+        const interp = buildInterpretation(
+          ageVal,
+          physAge,
+          psychAge,
+          wellness,
+          lifeStage
+        );
+        const resInterp = document.getElementById("res-interpretation");
+        resInterp.textContent = interp;
+
+        const resultsCard = document.getElementById("results-card");
+        resultsCard.classList.add("visible");
+        resultsCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  </script>
+</body>
+</html>
